@@ -1,6 +1,6 @@
 deployment:
-	pypets:
-		branch: master
-		heroku:
-			appname: pypets
-	
+  dev-pypets:
+    branch: master
+    heroku:
+      appname: pypets
+
