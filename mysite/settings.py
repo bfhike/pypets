@@ -25,7 +25,7 @@ SECRET_KEY = 'b4hzw$2ds00w3vf1k@r)&-^0-@wg)ia)siy0%*mys!u45ndng*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pypets.herokuapp.com']
+ALLOWED_HOSTS = ['pypets.herokuapp.com','localhost']
 
 
 # Application definition
