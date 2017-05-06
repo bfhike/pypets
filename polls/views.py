@@ -14,8 +14,8 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """Return the last five published questions."""
         return Question.objects.filter(
-			pub_date__lte=timezone.now()
-		).order_by('-pub_date')[:5]
+            pub_date__lte=timezone.now()
+        ).order_by('-pub_date')[:5]
 
 
 class DetailView(generic.DetailView):
@@ -30,6 +30,15 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+
+
+def create(request):
+    q = Question(question_text=request.POST['question_text'], pub_date=timezone.now())
+    q.save()
+    q.choice_set.create(choice_text='option 1', votes=0)
+    q.choice_set.create(choice_text='option 2', votes=0)
+    q.choice_set.create(choice_text='option 3', votes=0)
+    return HttpResponseRedirect(reverse('polls:detail', args=(q.id,)))
 
 
 def vote(request, question_id):

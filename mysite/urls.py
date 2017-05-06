@@ -18,9 +18,10 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from . import views
 
 urlpatterns = [
-    url(r'^$', lambda r: HttpResponseRedirect(reverse('polls:index'))),
+    url(r'^$', views.index, name='index'),
     url(r'^polls/', include('polls.urls')),
     url(r'^admin/', admin.site.urls),
 ]

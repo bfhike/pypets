@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['pypets.herokuapp.com','localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'mysite.apps.SiteConfig',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Python Polling</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:create' %}" method="post">
+{% csrf_token %}
+<label for="question_text">Create a new poll</label><br />
+<input type="text" name="question_text" id="question_text" placeholder="Favorite animal?"/>
+<input type="submit" value="Create" />
+</form>
+
+<div>
+  <a href="{% url 'polls:index' %}">Current Polls</a>
+  <a href="{% url 'admin:index' %}">Admin Site</a>
+</div>
+{% endblock %}
