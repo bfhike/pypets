@@ -32,13 +32,11 @@ class ResultsView(generic.DetailView):
     template_name = 'polls/results.html'
 
 
-def create(request):
-    q = Question(question_text=request.POST['question_text'], pub_date=timezone.now())
-    q.save()
-    q.choice_set.create(choice_text='option 1', votes=0)
-    q.choice_set.create(choice_text='option 2', votes=0)
-    q.choice_set.create(choice_text='option 3', votes=0)
-    return HttpResponseRedirect(reverse('polls:detail', args=(q.id,)))
+def search(request):
+    first_word = request.POST['question_text']
+    if len(first_word) == 0:
+        first_word = None
+    return HttpResponseRedirect(reverse('polls:index', args=(first_word,)))
 
 
 def vote(request, question_id):

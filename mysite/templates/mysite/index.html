@@ -5,11 +5,12 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'polls:create' %}" method="post">
+<form action="{% url 'polls:search' %}" method="post">
 {% csrf_token %}
-<label for="question_text">Make a new poll</label><br />
-<input type="text" name="question_text" id="question_text" placeholder="Favorite animal?"/>
-<input type="submit" value="Add" />
+<label for="question_text">Search Polls</label><br />
+<input type="text" name="question_text" id="question_text" placeholder="Enter a keyword"
+      pattern="\w*" required="required" title="Enter a keyword without spaces"/>
+<input type="submit" value="Search" />
 </form>
 
 <div>

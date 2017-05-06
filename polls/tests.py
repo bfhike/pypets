@@ -10,7 +10,8 @@ from django.utils import timezone
 
 from .models import Question
 
-def create_question(question_text, days):
+
+def create_question(question_text, days=0):
     """
     Creates a question with the given `question_text` and published the
     given number of `days` offset to now (negative for questions published
@@ -31,24 +32,23 @@ class QuestionMethodTests(TestCase):
         future_question = Question(pub_date=time)
         self.assertIs(future_question.was_published_recently(), False)
  
-
     def test_was_published_recently_with_old_question(self):
-	    """
-	    was_published_recently() should return False for questions whose
-	    pub_date is older than 1 day.
-	    """
-	    time = timezone.now() - datetime.timedelta(days=30)
-	    old_question = Question(pub_date=time)
-	    self.assertIs(old_question.was_published_recently(), False)
+        """
+        was_published_recently() should return False for questions whose
+        pub_date is older than 1 day.
+        """
+        time = timezone.now() - datetime.timedelta(days=30)
+        old_question = Question(pub_date=time)
+        self.assertIs(old_question.was_published_recently(), False)
 
     def test_was_published_recently_with_recent_question(self):
-	    """
-	    was_published_recently() should return True for questions whose
-	    pub_date is within the last day.
-	    """
-	    time = timezone.now() - datetime.timedelta(hours=1)
-	    recent_question = Question(pub_date=time)
-	    self.assertIs(recent_question.was_published_recently(), True)
+        """
+        was_published_recently() should return True for questions whose
+        pub_date is within the last day.
+        """
+        time = timezone.now() - datetime.timedelta(hours=1)
+        recent_question = Question(pub_date=time)
+        self.assertIs(recent_question.was_published_recently(), True)
 
 
 class QuestionViewTests(TestCase):
@@ -131,5 +131,44 @@ class QuestionIndexDetailTests(TestCase):
         url = reverse('polls:detail', args=(past_question.id,))
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
+
+
+class QuestionIndexSearchTests(TestCase):
+
+    def test_index_view_with_a_keyword_string(self):
+        """
+        The index view of a question with a keyword = string.
+        """
+        qabc = create_question(question_text='question abc')
+        q123 = create_question(question_text='question 123')
+        url = reverse('polls:index', args=('abc',))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, qabc.question_text)
+        self.assertNotContains(response, q123.question_text)
+
+    def test_index_view_with_a_keyword_number(self):
+        """
+        The index view of a question with a keyword = number.
+        """
+        qabc = create_question(question_text='question abc')
+        q123 = create_question(question_text='question 123')
+        url = reverse('polls:index', args=('123',))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, qabc.question_text)
+        self.assertContains(response, q123.question_text)
+
+    def test_index_view_with_a_keyword_None(self):
+        """
+        The index view of a question without a keyword.
+        """
+        qabc = create_question(question_text='question abc')
+        q123 = create_question(question_text='question 123')
+        url = reverse('polls:index', args=(None,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, qabc.question_text)
+        self.assertContains(response, q123.question_text)
 
 
