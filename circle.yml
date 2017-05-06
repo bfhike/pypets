@@ -1,6 +1,6 @@
 deployment:
   dev-pypets:
-    branch: question_create_page
+    branch: master
     heroku:
       appname: pypets
 
