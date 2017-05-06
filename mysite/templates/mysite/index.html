@@ -7,9 +7,9 @@
 
 <form action="{% url 'polls:create' %}" method="post">
 {% csrf_token %}
-<label for="question_text">Create a new poll</label><br />
+<label for="question_text">Make a new poll</label><br />
 <input type="text" name="question_text" id="question_text" placeholder="Favorite animal?"/>
-<input type="submit" value="Create" />
+<input type="submit" value="Add" />
 </form>
 
 <div>
