@@ -3,3 +3,4 @@ venv
 *.swp
 staticfiles
 .env
+debug.log

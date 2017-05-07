@@ -10,6 +10,10 @@ from django.utils import timezone
 
 from .models import Question
 
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 def create_question(question_text, days=0):
     """
@@ -141,7 +145,7 @@ class QuestionIndexSearchTests(TestCase):
         """
         qabc = create_question(question_text='question abc')
         q123 = create_question(question_text='question 123')
-        url = reverse('polls:index', args=('abc',))
+        url = reverse('polls:indexsearch', args=('abc',))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, qabc.question_text)
@@ -153,11 +157,12 @@ class QuestionIndexSearchTests(TestCase):
         """
         qabc = create_question(question_text='question abc')
         q123 = create_question(question_text='question 123')
-        url = reverse('polls:index', args=('123',))
+        url = reverse('polls:indexsearch', args=('123',))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, qabc.question_text)
         self.assertContains(response, q123.question_text)
+        # logger.error(response)
 
     def test_index_view_with_a_keyword_None(self):
         """
@@ -165,9 +170,11 @@ class QuestionIndexSearchTests(TestCase):
         """
         qabc = create_question(question_text='question abc')
         q123 = create_question(question_text='question 123')
-        url = reverse('polls:index', args=(None,))
+        url = reverse('polls:indexsearch', args=('',))
+        # logger.error(url)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+        # logger.error(response)
         self.assertContains(response, qabc.question_text)
         self.assertContains(response, q123.question_text)
 
